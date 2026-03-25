@@ -25,7 +25,7 @@ To run this script, you will need to make sure you have the most updated src and
 from the course repository.
 
 Then, in the terminal or command line, run:
-  python builds/build3_hitl_router_agent.py --data data/penguins.csv --report_dir reports --tags build3 --memory
+  python3 builds/build3_hitl_router_agent.py --data data/penguins.csv --report_dir reports --tags build3 --memory
 
   To stream LLM output, add the --stream flag to the command above
 
