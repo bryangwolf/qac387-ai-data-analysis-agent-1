@@ -1,33 +1,14 @@
 """
-<<<<<<< HEAD
 Build 0: Data Analysis Pipeline Assignment
-=======
-Build 0: Data Analysis Pipeline (SOLUTION KEY for grading)
->>>>>>> c438053 (Added complete build0 data analysis pipeline)
 
 This file provides:
 - Completed code for BLANK 1 ... BLANK 10
 - Full implementations of:
     * missingness_table(df)
     * multiple_linear_regression(df, outcome, predictors=None)
-<<<<<<< HEAD
 
 Note: This solution uses ONLY numpy/pandas for regression (np.linalg.lstsq),
 so it should run in most environments without extra dependencies.
-=======
-    * Note: The regression function uses statsmodels OLS instead of numpy lstsq for
-    * better handling of categorical predictors and missing data.
-
-HOW TO RUN (example): You can copy and paste this command (all one line) in your **terminal** after
-replacing Target_Column, Outcome_Column, Predictor1, Predictor2 with actual column names from your dataset:
-
-NOTE: This only works if you have cloned the repository exactly as is.
-If not, you will have to adjust the path to the python code and data file to match your folder structure.
-
-python builds/Build0_data_analysis_pipeline_assignment_1.py --data data/penguins.csv --target Target_Column --outcome Outcome_Column --predictors Predictor1,Predictor2 --report_dir reports/
-
-This will run the full pipeline and save outputs to the specified report directory.
->>>>>>> c438053 (Added complete build0 data analysis pipeline)
 """
 
 from __future__ import annotations
@@ -204,16 +185,11 @@ def multiple_linear_regression(
     df: pd.DataFrame, outcome: str, predictors: Optional[List[str]] = None
 ) -> Dict[str, Any]:
     """
-<<<<<<< HEAD
     Fit multiple linear regression using least squares (numpy).
-=======
-    Fit multiple linear regression using statsmodels OLS (formula interface).
->>>>>>> c438053 (Added complete build0 data analysis pipeline)
 
     - outcome must be numeric
     - predictors optional:
         if None -> all numeric columns except outcome
-<<<<<<< HEAD
     - drops rows with missing values in outcome/predictors
     - returns JSON-safe dictionary
     """
@@ -283,90 +259,6 @@ def multiple_linear_regression(
         "coefficients": coefs,
     }
     return out
-=======
-        if provided -> uses numeric predictors as-is and wraps non-numeric predictors in C(...)
-    - Missing data: statsmodels will drop rows with any missing values in outcome/predictors
-        (listwise deletion), matching typical OLS behavior.
-    """
-
-    # -------------------------
-    # 1) Validate inputs
-    # -------------------------
-    if outcome not in df.columns:
-        raise ValueError(f"Outcome column '{outcome}' not found in DataFrame.")
-
-    if not _is_numeric_series(df[outcome]):
-        raise ValueError(
-            f"Outcome column '{outcome}' must be numeric for OLS regression."
-        )
-
-    if predictors is None:
-        # Default: all numeric columns except the outcome
-        predictors = [
-            c
-            for c in df.select_dtypes(include=["number"]).columns.tolist()
-            if c != outcome
-        ]
-
-    if len(predictors) == 0:
-        raise ValueError("No predictors provided.")
-
-    for p in predictors:
-        if p not in df.columns:
-            raise ValueError(f"Predictor column '{p}' not found in DataFrame.")
-        if p == outcome:
-            raise ValueError("Outcome cannot be included as a predictor.")
-
-    # -------------------------
-    # 2) Build formula
-    # -------------------------
-    terms: List[str] = []
-    for p in predictors:
-        if _is_numeric_series(df[p]):
-            terms.append(p)
-        else:
-            # Treat strings/categories as categorical predictors
-            terms.append(f"C({p})")
-
-    formula = f"{outcome} ~ " + " + ".join(terms)
-
-    # -------------------------
-    # 3) Fit model
-    # -------------------------
-    model = smf.ols(formula=formula, data=df).fit()
-
-    # -------------------------
-    # 4) Package results (JSON-safe)
-    # -------------------------
-    params = {k: float(v) for k, v in model.params.items()}
-    pvals = {k: float(v) for k, v in model.pvalues.items()}
-    bse = {k: float(v) for k, v in model.bse.items()}
-
-    ci = model.conf_int()
-    conf_int = {idx: [float(ci.loc[idx, 0]), float(ci.loc[idx, 1])] for idx in ci.index}
-
-    results: Dict[str, Any] = {
-        "method": "statsmodels_ols",
-        "formula": formula,
-        "outcome": outcome,
-        "predictors": predictors,
-        "n_obs": int(model.nobs),
-        "df_model": float(model.df_model),
-        "df_resid": float(model.df_resid),
-        "r2": float(model.rsquared),
-        "adj_r2": float(model.rsquared_adj),
-        "aic": float(model.aic),
-        "bic": float(model.bic),
-        "f_stat": float(model.fvalue) if model.fvalue is not None else None,
-        "f_pvalue": float(model.f_pvalue) if model.f_pvalue is not None else None,
-        "coefficients": params,
-        "p_values": pvals,
-        "std_err": bse,
-        "conf_int_95": conf_int,
-    }
-
-    return results
->>>>>>> c438053 (Added complete build0 data analysis pipeline)
 
 
 def correlations(df: pd.DataFrame, numeric_cols: List[str]) -> pd.DataFrame:
@@ -544,7 +436,6 @@ def target_check(df: pd.DataFrame, target: str) -> Optional[dict]:
 # ----------------
 # Main pipeline
 # ----------------
-<<<<<<< HEAD
 
 
 def main():
@@ -617,8 +508,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-=======
->>>>>>> c438053 (Added complete build0 data analysis pipeline)
 
 
 def main():
